@@ -14,10 +14,9 @@ from sensor_msgs.msg import Image, PointCloud2
 import sensor_msgs.point_cloud2 as pc2
 from cv_bridge import CvBridge
 from skimage.morphology import convex_hull_image
-import time
 
 
-class Calc_p2d():
+class CloudToMask():
     def __init__(self):
         self.bridge = CvBridge()
         self.pub = rospy.Publisher("~output", Image, queue_size=10)
@@ -86,10 +85,12 @@ class Calc_p2d():
         msg_out.header = msg.header
         self.pub.publish(msg_out)
 
+
 def main(args):
     rospy.init_node("cloud_to_mask", anonymous=False)
-    calc_p2d = Calc_p2d()
+    c2m = CloudToMask()
     rospy.spin()
+
 
 if __name__ == '__main__':
     main(sys.argv)
