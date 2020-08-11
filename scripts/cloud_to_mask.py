@@ -21,10 +21,6 @@ class CloudToMask():
     def __init__(self):
         self.bridge = CvBridge()
         self.pub = rospy.Publisher("~output", Image, queue_size=10)
-        self.input_cloud = rospy.get_param(
-            '~input_cloud', "/prosilica_cloud/output")
-        self.camera_info = rospy.get_param(
-            '~camera_info', "/prosilica/camera_info")
         self.clip_rect = rospy.get_param(
             '~clip_rect', True)
         self.margin = rospy.get_param(
