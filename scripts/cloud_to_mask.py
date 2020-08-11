@@ -5,15 +5,16 @@
 Project 3d pointcloud to pixel.
 """
 
-import image_geometry
-import rospy
-from sensor_msgs.msg import CameraInfo
 import sys
+
+import image_geometry
 import numpy as np
-from sensor_msgs.msg import Image, PointCloud2
+import rospy
 import sensor_msgs.point_cloud2 as pc2
 from cv_bridge import CvBridge
+from sensor_msgs.msg import CameraInfo
 from skimage.morphology import convex_hull_image
+from sensor_msgs.msg import Image, PointCloud2
 
 
 class CloudToMask():
