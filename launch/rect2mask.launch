@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<launch>
+  <arg name="INPUT_IMAGE" default="/head_mount_kinect/hd/image_color_rect_repub" />
+  <arg name="CAMERA_INFO" value="/head_mount_kinect/hd/camera_info" />
+  <arg name="RECT" default="/ssd_hook_stand/output/rect" />
+
+  <node name="rect_to_mask" pkg="mask_utils" type="rect_to_mask.py" output="screen" cwd="node">
+    <remap from="~rect" to="$(arg RECT)" />
+    <remap from="~camera_info" to="/head_mount_kinect/hd/camera_info" />
+  </node>
+
+  <node name="apply_mask_image" pkg="nodelet" type="nodelet" args="standalone jsk_perception/ApplyMaskImage" output="screen" respawn="true">
+
+    <remap from="~input" to="$(arg INPUT_IMAGE)" />
+    <remap from="~input/mask" to="/rect_to_mask/output" />
+
+    <rosparam>
+        approximate_sync: true
+        queue_size: 300
+        clip: true
+        use_rectified_image: false
+      </rosparam>
+  </node>
+
+</launch>
