@@ -53,17 +53,15 @@
 
   <node name="extract_indices_gripper"
         pkg="jsk_pcl_ros" type="extract_indices">
-    <remap from="~input" to="$(arg INPUT_CLOUD)" />
+        <remap from="~input" to="$(arg INPUT_CLOUD)" />
     <remap from="~indices" to="attention_clipper_gripper/output/point_indices" />
   </node>
 
   <node name="cloud_to_mask"
         pkg="cloud2mask" type="cloud_to_mask.py"
         output="screen" cwd="node">
-    <rosparam>
-      input_cloud: /extract_indices_gripper/output
-      camera_info: /head_mount_kinect/hd/camera_info
-    </rosparam>
+        <remap from="~input_cloud" to="/extract_indices_gripper/output" /> -->
+        <remap from="~camera_info" to="/head_mount_kinect/hd/camera_info" />
   </node>
 
   <node name="apply_mask_image"

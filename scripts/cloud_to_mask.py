@@ -35,14 +35,14 @@ class CloudToMask():
         self.subscribe()
 
     def load_camera_info(self):
-        ci = rospy.wait_for_message(self.camera_info, CameraInfo)
+        ci = rospy.wait_for_message('~camera_info', CameraInfo)
         self.cm.fromCameraInfo(ci)
         self.P_np = np.array(self.cm.P)
         rospy.loginfo("load camera info")
 
     def subscribe(self):
-        self.image_sub = rospy.Subscriber(
-            self.input_cloud, PointCloud2, self.callback)
+        self.sub = rospy.Subscriber(
+            '~input_cloud', PointCloud2, self.callback)
 
     def callback(self, msg):
         mask = np.zeros((self.cm.height, self.cm.width), dtype=np.bool)
@@ -57,11 +57,12 @@ class CloudToMask():
             p2d = np.matmul(self.P_np, points_np)
             p2d = p2d[:2] / p2d[2]
             p2d = p2d.astype(np.int16)
-            x_out = np.where(p2d[1] >= self.cm.height)
-            y_out = np.where(p2d[0] >= self.cm.width)
-            x_in = np.delete(p2d[1], x_out)
+
+            x_out = np.where(p2d[0] >= self.cm.width)
+            y_out = np.where(p2d[1] >= self.cm.height)
+            x_in = np.delete(p2d[0], x_out)
             x_in = np.delete(x_in, y_out)
-            y_in = np.delete(p2d[0], x_out)
+            y_in = np.delete(p2d[1], x_out)
             y_in = np.delete(y_in, y_out)
 
             if(self.clip_rect):
@@ -69,10 +70,11 @@ class CloudToMask():
                 x_min = np.min(x_in)
                 y_max = np.max(y_in)
                 y_min = np.min(y_in)
-                mask[x_min - self.margin: x_max + self.margin,
-                     y_min - self.margin: y_max + self.margin] = 1
+                mask[y_min - self.margin: y_max + self.margin,
+                     x_min - self.margin: x_max + self.margin] = 1
+
             else:
-                index = (x_in, y_in)
+                index = (y_in, x_in)
                 mask[index] = 1
                 mask = convex_hull_image(mask)
             mask = mask.astype(np.uint8) * 255
@@ -94,4 +96,3 @@ def main(args):
 
 if __name__ == '__main__':
     main(sys.argv)
-
