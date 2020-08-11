@@ -26,7 +26,6 @@
       <remap from="rgb/image_rect_color"        to="image_color_rect_repub_desktop"/>
       <remap from="depth_registered/image_rect" to="image_depth_rect_repub_desktop"/>
       <remap from="depth_registered/points"     to="republished_points_desktop"/>
-      <param name="queue_size" type="int" value="$(arg queue_size)"/>
     </node>
   </group>
 
@@ -66,4 +65,19 @@
       camera_info: /head_mount_kinect/hd/camera_info
     </rosparam>
   </node>
+
+  <node name="apply_mask_image"
+          pkg="nodelet" type="nodelet"
+          args="standalone jsk_perception/ApplyMaskImage"
+          output="screen" respawn="true">
+      <remap from="~input" to="/head_mount_kinect/hd/image_color_rect_repub" />
+      <remap from="~input/mask" to="/cloud_to_mask/output" />
+      <rosparam>
+        approximate_sync: true
+        queue_size: 300
+        clip: true
+        use_rectified_image: false
+      </rosparam>
+  </node>
+
 </launch>
