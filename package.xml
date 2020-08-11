@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>cloud2mask</name>
+  <name>mask_utils</name>
   <version>0.0.0</version>
-  <description>The cloud2mask package</description>
+  <description>The mask_utils package</description>
 
   <maintainer email="takeuchi@jsk.imi.i.u-tokyo.ac.jp">kosuke</maintainer>
   <license>MIT</license>

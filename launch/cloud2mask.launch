@@ -58,7 +58,7 @@
   </node>
 
   <node name="cloud_to_mask"
-        pkg="cloud2mask" type="cloud_to_mask.py"
+        pkg="mask_utils" type="cloud_to_mask.py"
         output="screen" cwd="node">
         <remap from="~input_cloud" to="/extract_indices_gripper/output" /> -->
         <remap from="~camera_info" to="/head_mount_kinect/hd/camera_info" />
