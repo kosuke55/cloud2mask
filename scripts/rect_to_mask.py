@@ -31,7 +31,7 @@ class RectToMask():
         mask = np.zeros((self.height, self.width), dtype=np.uint8)
         for rect in msg.rects:
             mask[rect.y:rect.y + rect.height,
-                 rect.x:rect.x + rect.width] = 1
+                 rect.x:rect.x + rect.width] = 255
         msg_out = self.bridge.cv2_to_imgmsg(mask, "mono8")
         msg_out.header = msg.header
         self.pub.publish(msg_out)
