@@ -13,7 +13,7 @@ class ExpandMask():
     def __init__(self):
         self.bridge = CvBridge()
         self.pub = rospy.Publisher("~output", Image, queue_size=10)
-        self.margin = rospy.get_param('~margin', 20)
+        self.padding = rospy.get_param('~padding', 20)
         self.subscribe()
 
     def subscribe(self):
@@ -26,10 +26,10 @@ class ExpandMask():
         foreground = np.where(mask == 255)
 
         if len(foreground[0]) > 0:
-            ymin = np.min(foreground[0]) - self.margin
-            ymax = np.max(foreground[0]) + self.margin
-            xmin = np.min(foreground[1]) - self.margin
-            xmax = np.max(foreground[1]) + self.margin
+            ymin = np.min(foreground[0]) - self.padding
+            ymax = np.max(foreground[0]) + self.padding
+            xmin = np.min(foreground[1]) - self.padding
+            xmax = np.max(foreground[1]) + self.padding
 
             ymin = max(0, ymin)
             ymax = min(height, ymax)
