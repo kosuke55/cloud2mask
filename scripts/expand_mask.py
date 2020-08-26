@@ -34,7 +34,7 @@ class ExpandMask():
             ymin = max(0, ymin)
             ymax = min(height, ymax)
             xmin = max(0, xmin)
-            xmax = min(height, xmax)
+            xmax = min(width, xmax)
 
             mask[ymin:ymax, xmin:xmax] = 255
 
