@@ -20,7 +20,7 @@ class ImagePlaceHolder():
 
     def service(self):
         self.service = rospy.Service(
-            'set_img', Trigger, self.set_image)
+            'set_image', Trigger, self.set_image)
 
     def subscribe(self):
         self.sub = rospy.Subscriber(
@@ -28,15 +28,16 @@ class ImagePlaceHolder():
 
     def callback(self, img):
         if self.callback_update:
-            self.tmp_img = img
-        else:
             self.img = img
+        else:
+            self.tmp_img = img
 
     def timer_callback(self, timer):
         if self.img is not None:
+            self.img.header.stamp = rospy.Time.now()
             self.pub.publish(self.img)
 
-    def set_image(self):
+    def set_image(self, req):
         self.img = self.tmp_img
         return TriggerResponse(True, 'set image')
 
